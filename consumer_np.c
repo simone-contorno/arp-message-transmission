@@ -1,3 +1,11 @@
+/* 
+ * ARP - Advanced Robot Programming
+ * Assignment 2 - Producer / Consumer data transfer
+ * Authors: Simone Contorno and Grabiele Russo
+ */
+
+// Use: ./socket hostname port max_size
+
 // Headers
 #include <stdio.h>
 #include <sys/types.h>
@@ -16,9 +24,8 @@
 #include <sys/stat.h>
 
 int main(int argc, char *argv[]) {
-    printf("Consumer start");
     int fd; 
-    int dim = atoi(argv[0]);
+    int dim = atoi(argv[3]);
     char buffer[dim];
     char *myfifo = "/tmp/myfifo";
     

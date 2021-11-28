@@ -1,6 +1,6 @@
 /* 
  * ARP - Advanced Robot Programming
- * Assignment 2 - Producer / Consumer data transfering
+ * Assignment 2 - Producer / Consumer data transfer
  * Authors: Simone Contorno and Grabiele Russo
  */
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
     // Take server hostname
     server = gethostbyname(argv[1]);
     if (server == NULL) 
-        error("ERROR, no such host.\n");
+        error("ERROR, no such host");
     
     // Take port number
     portno = atoi(argv[2]);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
      */
     sockfd = socket(AF_INET, SOCK_STREAM, 0); 
     if (sockfd < 0) 
-        error("ERROR opening socket.\n");
+        error("ERROR opening socket");
     
     /* 
      * Set buffer to 0:
@@ -82,15 +82,13 @@ int main(int argc, char *argv[]) {
 
     // Start socket connection to the producer
     if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
-        error("ERROR connecting to the server.\n");
-    else {
-        printf("SUCCESS connecting to the server.\n");
-    }
+        error("ERROR connecting to the server");
 
     // Read message from the producer
     bzero(buffer, dim);
     n = read(sockfd, buffer, dim-1);
     if (n < 0) 
-        error("ERROR reading from socket.\n");
-    printf("Received message: %s\n", buffer);
+        error("ERROR reading from socket");
+
+    return 0;
 }

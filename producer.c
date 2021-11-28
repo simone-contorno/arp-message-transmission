@@ -1,6 +1,6 @@
 /* 
  * ARP - Advanced Robot Programming
- * Assignment 2 - Producer / Consumer data transfering
+ * Assignment 2 - Producer / Consumer data transfer
  * Authors: Simone Contorno and Grabiele Russo
  */
 
@@ -41,13 +41,13 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in serv_addr; // Server address
     struct sockaddr_in cli_addr; // Client address
     
-    int dim = atoi(argv[2]);
+    int dim = atoi(argv[3]);
     char buffer[dim];
     
     /* Initialize local variables */
     
     // Take port number
-    portno = atoi(argv[1]);
+    portno = atoi(argv[2]);
 
     /* 
      * Creates a new socket on the Internet:
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
      */
     sockfd = socket(AF_INET, SOCK_STREAM, 0); 
     if (sockfd < 0) 
-        error("ERROR opening socket.\n");
+        error("ERROR opening socket");
     
     /* 
      * Set buffer to 0:
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     // Bind the socket to the server address
     if (bind(sockfd, (struct sockaddr *) &serv_addr,
         sizeof(serv_addr)) < 0) 
-        error("ERROR on binding.\n");
+        error("ERROR on binding");
     
     // Start listening 
     listen(sockfd, 5);
@@ -86,8 +86,8 @@ int main(int argc, char *argv[]) {
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
     if (newsockfd < 0) 
-        error("ERROR on accept.\n");
-
+        error("ERROR on accept");
+    
     // Create a random message
     char alphabet[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'z', 'x', 'y', 'w', 'k', 'j'};
     bzero(buffer, dim);
@@ -96,11 +96,11 @@ int main(int argc, char *argv[]) {
         int r = rand() % sizeof(alphabet);
         buffer[i] = alphabet[r];
     }
-    printf("Written message: %s\n", buffer);
 
     // Send the message to the consumer
     n = write(newsockfd, buffer, strlen(buffer));
     if (n < 0) 
-        error("ERROR writing to socket.\n");
+        error("ERROR writing to socket");
+
     return 0;
 }
