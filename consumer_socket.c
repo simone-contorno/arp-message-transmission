@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 
     // Read message from the producer
     bzero(buffer, dim);
-    n = read(sockfd, buffer, dim-1);
+    n = read(sockfd, buffer, dim);
     if (n < 0) 
         error("ERROR reading from socket");
     printf("[CONSUMER] Message received: ");
