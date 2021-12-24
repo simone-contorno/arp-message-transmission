@@ -77,10 +77,6 @@ int main(int argc, char * argv[]){
     sem_init(full, 1, 0);
     sem_init(mutex, 1, 1);
 
-    int in = 0;
-    int out = 0;
-    int CB[dim];
-
     char * start = ptr;
     //---------------------------------- Circular Buffer Section ---------------------------------------
     // write into the memory segment
