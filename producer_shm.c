@@ -106,7 +106,7 @@ int main(int argc, char * argv[]){
     sem_close(full);
     sem_unlink(sem_full_name);
 
-    munmap(ptr,SIZE);
+    munmap(ptr,dim);
 
     return 0;
 }
