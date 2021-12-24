@@ -19,10 +19,10 @@ int main(int argc, char * argv[]){
 
     const int SIZE = 4096; // is a default value, after we redefine the size using ftruncate
     char message[] = {'i','p','r','z','n','s','u','c','d','n','p','z','!','!','\0'};
-
+    
+    printf("the message is : \n");
     for(int i = 0; i < strlen(message); i++){
-        printf("the message is : \n");
-        printf(" %s, ", &message[i]);
+        printf("%s", &message[i]);
     }
     int shm_fd;
     void * ptr;
