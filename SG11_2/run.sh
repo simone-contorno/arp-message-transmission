@@ -5,11 +5,18 @@ elif [[ $1 == 2 ]]; then
     sleep 1
     ./executables/named_pipe_consumer $2
 elif [[ $1 == 3 ]]; then
-    sudo ./executables/socket_producer $3 $4 &
-    sleep 1
+    if [[ "$EUID" -ne 0 ]]; then 
+        echo "Please run as root typing 'sudo su' before execute this message transfer method."
+        exit
+    fi
+    ./executables/socket_producer $3 $4 &
     ./executables/socket_consumer $2 $3 $4
 elif [[ $1 == 4 ]]; then
-    ./executables/shared_memory_producer 
+if [[ "$EUID" -ne 0 ]]; then 
+        echo "Please run as root typing 'sudo su' before execute this message transfer method."
+        exit
+    fi
+    ./executables/shared_memory_producer &
     ./executables/shared_memory_consumer 
 else
     echo "Argument not valid! Type '1' for unnamed pipe, '2' for named pipe, '3' for socket and '4' for shared memory.";
