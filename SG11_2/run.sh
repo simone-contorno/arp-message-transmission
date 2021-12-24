@@ -12,7 +12,7 @@ elif [[ $1 == 3 ]]; then
     ./executables/socket_producer $3 $4 &
     ./executables/socket_consumer $2 $3 $4
 elif [[ $1 == 4 ]]; then
-if [[ "$EUID" -ne 0 ]]; then 
+    if [[ "$EUID" -ne 0 ]]; then 
         echo "Please run as root typing 'sudo su' before execute this message transfer method."
         exit
     fi
