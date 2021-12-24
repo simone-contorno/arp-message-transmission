@@ -12,6 +12,6 @@ else
     gcc $1/src/program2/named_pipe_consumer.c -o executables/named_pipe_consumer &
     gcc $1/src/program3/socket_producer.c -o executables/socket_producer &
     gcc $1/src/program3/socket_consumer.c -o executables/socket_consumer &
-    gcc $1/src/program4/shared_memory_producer.c -o executables/shared_memory_producer -lrt -pthread &
-    gcc $1/src/program4/shared_memory_consumer.c -o executables/shared_memory_consumer -lrt -pthread
+    gcc $1/src/program4/shared_memory_producer.c -o executables/shared_memory_producer -lrt -lm -pthread &
+    gcc $1/src/program4/shared_memory_consumer.c -o executables/shared_memory_consumer -lrt -lm -pthread
 fi

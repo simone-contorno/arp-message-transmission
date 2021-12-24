@@ -20,6 +20,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <semaphore.h>
+#include <math.h>
 
 /** 
  * Function to exit printing the error message 
@@ -50,21 +51,18 @@ int main(int argc, char * argv[]){
     const int SIZE = 4096;
     int shm_fd;
     void * ptr;
-    //int dim_message = 14;
     int max_size = atoi(argv[1]);
-    int dim = 7;
-
+    int dim = round(sqrt((double) max_size));
+    
     //----------------------- Shared Memory section-------------------------------
 
     shm_fd = shm_open(shm_name, O_RDONLY, 0666);
-    if(shm_fd == -1)
+    if (shm_fd == -1)
         error("[CONSUMER] shm_open() failed");
 
     ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);
-    if(ptr == MAP_FAILED){
+    if (ptr == MAP_FAILED) 
         error("[CONSUMER] shm_open() failed");
-        return 1;
-    }
 
     //--------------------------------- Semaphores Section -----------------------------------
     sem_t * empty = sem_open(sem_emp_name, 0);

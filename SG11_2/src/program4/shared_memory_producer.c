@@ -23,6 +23,7 @@
 #include <sys/mman.h>
 #include <semaphore.h>
 #include <time.h>
+#include <math.h>
 
 /** 
  * Function to exit printing the error message 
@@ -95,7 +96,9 @@ int main(int argc, char * argv[]){
     int shm_fd;
     void * ptr;
 
-    int dim = 7;
+    int dim = round(sqrt((double) max_size));
+    printf("\n[PRODUCER] Buffer dimension: %d\n", dim);
+    fflush(stdout);
     sleep(1);
 
     //----------------------- Shared Memory section--------------------------------------
