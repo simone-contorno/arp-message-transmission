@@ -29,9 +29,6 @@ void error(char *msg) {
 }
 
 int main(int argc, char *argv[]) {
-    printf("\n[CONSUMER] STARTS\n");
-    fflush(stdout);
-
     /**
      * Check for number required arguments 
      */ 
@@ -39,6 +36,9 @@ int main(int argc, char *argv[]) {
        fprintf(stderr, "[CONSUMER] Usage: %s hostname port max_size\n", argv[0]);
        exit(-1);
     }
+
+    printf("\n[CONSUMER] STARTS\n");
+    fflush(stdout);
 
     /**
      * Local variables

@@ -30,9 +30,17 @@ void error(char *msg) {
 }
 
 int main(int argc, char * argv[]){
+    /**
+     * Check for number required arguments 
+     */ 
+    if (argc < 2) {
+       fprintf(stderr, "[CONSUMER] Usage: %s max_size\n", argv[0]);
+       exit(-1);
+    }
+    
     printf("\n[CONSUMER] STARTS\n");
     fflush(stdout);
-
+    
     const char * shm_name = "/CircularBuffer";
 
     const char * sem_emp_name = "/sem_emp";

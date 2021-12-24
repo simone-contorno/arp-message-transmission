@@ -21,15 +21,6 @@
 #include <sys/stat.h>
 #include <math.h>
 
-/**
- * Global variables 
- */
-char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-struct timespec time_1, time_2; // To compute the computation time
-int f; // To save the return value of fork() 
-int res; // To save the return value of the children after a fork() 
-long int exec_time; // Execution time
-
 /** 
  * Function to exit printing the error message 
  */
@@ -56,6 +47,7 @@ void printMessage(char* msg, char buffer[], int dim) {
  * Function to create a random message 
  */
 void randomMessage(char *buffer, int dim) {
+    char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     int r;
     bzero(buffer, dim);
     srand(time(NULL));
@@ -70,6 +62,8 @@ void randomMessage(char *buffer, int dim) {
  * Named pipe
  */
 void namedPipe(char buffer[], int max_size) {
+    struct timespec time_1, time_2; // To compute the computation time
+
     clock_gettime(CLOCK_REALTIME, &time_1);
 
     // Create named pipe
@@ -91,16 +85,12 @@ void namedPipe(char buffer[], int max_size) {
 
     clock_gettime(CLOCK_REALTIME, &time_2);
     sleep(1);
-    exec_time = time_2.tv_nsec - time_1.tv_nsec;
-    printf("\n--- NAMED PIPE ENDS ---\n\nTime required: %ld nanoseconds\n", exec_time);
+    long int exec_time = time_2.tv_nsec - time_1.tv_nsec;
+    printf("\n[PRODUCER] ENDS\n\nTime required: %ld nanoseconds\n", exec_time);
     fflush(stdout);
 }
 
 int main (int argc, char *argv[]) {
-    printf("\n--- NAMED PIPE STARTS ---\n"
-    "\n[PRODUCER] STARTS\n");
-    fflush(stdout);
-
     /**
      * Check for number required arguments 
      */ 
@@ -108,6 +98,10 @@ int main (int argc, char *argv[]) {
        fprintf(stderr, "[PRODUCER] Usage: %s max_size\n", argv[0]);
        exit(-1);
     }
+
+    printf("\n--- NAMED PIPE STARTS ---\n"
+    "\n[PRODUCER] STARTS\n");
+    fflush(stdout);
 
     // Take input from the user
     int max_size = atoi(argv[1]);
@@ -121,7 +115,7 @@ int main (int argc, char *argv[]) {
     // Call named pipe
     namedPipe(buffer, max_size);
 
-    printf("\n[PRODUCER] ENDS\n");
+    printf("\n--- NAMED PIPE ENDS ---\n");
     fflush(stdout);
     
     return 0;

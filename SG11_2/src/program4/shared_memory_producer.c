@@ -22,12 +22,7 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <semaphore.h>
-
 #include <time.h>
-#include <sys/wait.h> 
-
-struct timespec time_1, time_2; // To compute the computation time
-char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 /** 
  * Function to exit printing the error message 
@@ -55,6 +50,7 @@ void printMessage(char* msg, char buffer[], int dim) {
  * Function to create a random message 
  */
 void randomMessage(char *buffer, int dim) {
+    char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     int r;
     bzero(buffer, dim);
     srand(time(NULL));
@@ -66,19 +62,21 @@ void randomMessage(char *buffer, int dim) {
 }
 
 int main(int argc, char * argv[]){
-    printf("\n--- SHARED MEMORY STARTS ---\n"
-    "\n[PRODUCER] STARTS\n");
-    fflush(stdout);
-
     /**
      * Check for number required arguments 
      */ 
     if (argc < 2) {
-       fprintf(stderr, "[CONSUMER] Usage: %s max_size\n", argv[0]);
+       fprintf(stderr, "[PRODUCER] Usage: %s max_size\n", argv[0]);
        exit(-1);
     }
 
+    printf("\n--- SHARED MEMORY STARTS ---\n"
+    "\n[PRODUCER] STARTS\n");
+    fflush(stdout);
+    
     int max_size = atoi(argv[1]);
+
+    struct timespec time_1, time_2; // To compute the computation time
 
     clock_gettime(CLOCK_REALTIME, &time_1);
 
@@ -174,10 +172,10 @@ int main(int argc, char * argv[]){
     clock_gettime(CLOCK_REALTIME, &time_2);
     sleep(1);
     long int exec_time = time_2.tv_nsec - time_1.tv_nsec;
-    printf("\n--- SHARED MEMORY ENDS ---\n\nTime required: %ld nanoseconds\n", exec_time);
+    printf("\n[PRODUCER] ENDS\n\nTime required: %ld nanoseconds\n", exec_time);
     fflush(stdout);
 
-    printf("\n[PRODUCER] ENDS\n");
+    printf("\n--- SHARED MEMORY ENDS ---\n");
     fflush(stdout);
 
     return 0;

@@ -19,16 +19,6 @@
 #include <time.h>
 #include <sys/wait.h> 
 
-/**
- * Global variables 
- */
-char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-struct timespec time_1, time_2; // To compute the computation time
-int fd[2]; // File descriptors for the unnamed pipe 
-int f; // To save the return value of fork() 
-int res; // To save the return value of the children after a fork() 
-long int exec_time; // Execution time
-
 /** 
  * Function to exit printing the error message 
  */
@@ -55,6 +45,7 @@ void printMessage(char* msg, char buffer[], int dim) {
  * Function to create a random message 
  */
 void randomMessage(char *buffer, int dim) {
+    char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     int r;
     bzero(buffer, dim);
     srand(time(NULL));
@@ -68,17 +59,30 @@ void randomMessage(char *buffer, int dim) {
 /**
  * Unnamed pipe
  */
-void unnamedPipe(char buffer_P[], char buffer_C[], int dim) {
+void unnamedPipe(int dim) {
+    int res; // To save the return value of the children after a fork() 
+    int fd[2]; // File descriptors for the unnamed pipe 
+    struct timespec time_1, time_2; // To compute the computation time
+
+    // Declare buffers for Producer and Consumer
+    char buffer_P[dim], buffer_C[dim]; 
+
     clock_gettime(CLOCK_REALTIME, &time_1);
 
     // Open unnamed pipe
     if (pipe(fd) < 0) 
         error("ERROR opening unnamed pipe");
 
-    f = fork();
+    int f = fork();
     if (f < 0) 
         error("ERROR making fork");
     else if (f > 0) { // Producer
+        printf("\n[PRODUCER] STARTS\n");
+        fflush(stdout);
+
+        // Create a random message 
+        randomMessage(buffer_P, dim); 
+        
         close(fd[0]);
         if (write(fd[1], &buffer_P, dim) < 0)
             error("[PRODUCER] ERROR writing the message with unnamed pipe");
@@ -87,37 +91,44 @@ void unnamedPipe(char buffer_P[], char buffer_C[], int dim) {
         waitpid(-1, &res, 0);
     }
     else { // Consumer
+        printf("\n[CONSUMER] STARTS\n");
+        fflush(stdout);
         close(fd[1]);
         if (read(fd[0], &buffer_C, dim) < 0)
             error("[CONSUMER] ERROR reading the message with unnamed pipe");
-        printMessage("[CONSUMER] Message received: ", buffer_C, dim);
+        printMessage("\n[CONSUMER] Message received: ", buffer_C, dim);
+        printf("\n[CONSUMER] ENDS\n");
+        fflush(stdout);
         exit(0);
     }
 
     clock_gettime(CLOCK_REALTIME, &time_2);
     sleep(1);
-    exec_time = time_2.tv_nsec - time_1.tv_nsec;
-    printf("\n--- UNNAMED PIPE ENDS ---\n\nTime required: %ld nanoseconds\n\n", exec_time);
+    long int exec_time = time_2.tv_nsec - time_1.tv_nsec;
+    printf("\n[PRODUCER] ENDS\n\nTime required: %ld nanoseconds\n", exec_time);
     fflush(stdout); 
 }
 
 int main (int argc, char *argv[]) {
-    // Take input from the user
-    int max_size;
-    printf("\nMaximum message size (MB): ");
-    scanf("%d", &max_size);
-
     printf("\n--- UNNAMED PIPE STARTS ---\n");
     fflush(stdout);
 
-    // Declare buffers for Producer and Consumer
-    char buffer_P[max_size], buffer_C[max_size]; 
+    /**
+     * Check for number required arguments 
+     */ 
+    if (argc < 2) {
+       fprintf(stderr, "[PRODUCER] Usage: %s max_size\n", argv[0]);
+       exit(-1);
+    }
 
-    // Create a random message 
-    randomMessage(buffer_P, max_size); 
+    // Take input from the user
+    int max_size = atoi(argv[1]);
 
     // Call unnamed pipe
-    unnamedPipe(buffer_P, buffer_C, max_size);
+    unnamedPipe(max_size);
+
+    printf("\n--- UNNAMED PIPE ENDS ---\n\n");
+    fflush(stdout);
 
     return 0;
 }

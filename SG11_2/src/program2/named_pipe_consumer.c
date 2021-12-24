@@ -19,9 +19,6 @@
 #include <fcntl.h> 
 
 int main(int argc, char *argv[]) {
-    printf("\n[CONSUMER] STARTS\n");
-    fflush(stdout);
-
     /**
      * Check for number required arguments 
      */ 
@@ -30,6 +27,9 @@ int main(int argc, char *argv[]) {
        exit(-1);
     }
 
+    printf("\n[CONSUMER] STARTS\n");
+    fflush(stdout);
+    
     /**
      * Local variables
      */

@@ -21,13 +21,6 @@
 #include <unistd.h>
 #include <time.h>
 
-/**
- * Global variables 
- */
-char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-struct timespec time_1, time_2; // To compute the computation time
-long int exec_time; // Execution time
-
 /** 
  * Function to exit printing the error message 
  */
@@ -54,6 +47,7 @@ void printMessage(char* msg, char buffer[], int dim) {
  * Function to create a random message 
  */
 void randomMessage(char *buffer, int dim) {
+    char alphabet[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     int r;
     bzero(buffer, dim);
     srand(time(NULL));
@@ -68,6 +62,8 @@ void randomMessage(char *buffer, int dim) {
  * Socket 
  */
 void socketTransfer(char buffer[], char *argv[]) {
+    struct timespec time_1, time_2; // To compute the computation time
+
     clock_gettime(CLOCK_REALTIME, &time_1);
 
     /**
@@ -129,15 +125,12 @@ void socketTransfer(char buffer[], char *argv[]) {
 
     clock_gettime(CLOCK_REALTIME, &time_2);
     sleep(1);
-    exec_time = time_2.tv_nsec - time_1.tv_nsec;
-    printf("\n--- SOCKET ENDS ---\n\nTime required: %ld nanoseconds\n", exec_time);
+    long int exec_time = time_2.tv_nsec - time_1.tv_nsec;
+    printf("\n[PRODUCER] ENDS\n\nTime required: %ld nanoseconds\n", exec_time);
     fflush(stdout);
 }
 
 int main (int argc, char *argv[]) {
-    printf("\n--- SOCKET STARTS ---\n"
-    "\n[PRODUCER] STARTS\n");
-    fflush(stdout);
     /**
      * Check for number required arguments 
      */ 
@@ -146,6 +139,10 @@ int main (int argc, char *argv[]) {
        exit(-1);
     }
 
+    printf("\n--- SOCKET STARTS ---\n"
+    "\n[PRODUCER] STARTS\n");
+    fflush(stdout);
+    
     // Take input from the user
     int max_size = atoi(argv[2]);
 
@@ -158,7 +155,7 @@ int main (int argc, char *argv[]) {
     // Call named pipe
     socketTransfer(buffer, argv);
 
-    printf("\n[PRODUCER] ENDS\n");
+    printf("\n--- SOCKET ENDS ---\n");
     fflush(stdout);
 
     return 0;
