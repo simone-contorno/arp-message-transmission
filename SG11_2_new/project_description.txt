@@ -1,0 +1,41 @@
+# PROJECT DESCRIPTION
+
+This project is composed by 5 processes, each process has its specific purpose and comunicate 
+with other processes using two communication IPC methods which are SIGNAL and NAMED PIPE.
+The first process is the Command Console that can take in input (from the user) the following 
+commands :
+
+	* X and Z axis increase : With these commands the user can increase the speed of motor X
+				   and/or motor Z
+				   
+	* X and Z axis decrease : With these commands the user can decrease the speed of motor X
+				   and/or motor Z
+				  
+	* X and Z axis stop :     With these commands the user can stop the motor X
+				   and/or motor Z
+
+Then the commands are send to the two motors through Named Pipes (for more information see the text
+file of the process1 directory).
+
+The second process is the Inspection Console that show on the screen the hoist position received from
+the motors and can take in input (from the user) the two following commands :
+
+	* Reset Command : Reset the motors speed and position (means that the motors are brought to 
+			    their initial positions)
+			  
+	* Stop Command  : Stop the motors, by resetting the speed.
+
+Then the commands are send to the two motors through Named Pipes (for more information see the text
+file of the process2 directory).
+
+The third and fourth processes are Motor X and Motor Z that simulate the motion along X and Z axis,
+receive command from Commnad Console and Inspection Console (Reset and Stop/Emergency) and lastly 
+send to the inspection console the positions of the hoist, during the motion.
+In case of Reset Command or Watchdog signal if the motors position are different from zero (the starting
+position) they are brought automatically to the starting position before resetting the motors speed
+(for more information see the text files of the Process3 and process4 directories).
+
+The fifth process is the Watchdog that check if the processes are still active in a time range of 60 seconds.
+All processes to say to the watchdog that they are still active (they have done or are doing an action) 
+sends a signal, so if in 60 seconds no signal is detected, the watchdog send a Reset signal to all processes
+(for more information see the text file of the process5 directory).

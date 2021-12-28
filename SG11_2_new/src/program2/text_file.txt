@@ -1,0 +1,72 @@
+
+# PROCESS 2 - INSPECTION CONSOLE 
+
+
+## THE AIM OF INSPECTION CONSOLE :
+
+	In this project the inspection console is 
+	used for two purposes :
+	
+	* To receive from motors the hoist positions 
+	  while it is moving, and reporting them on the 
+	  screen
+	
+	* To manage the Stop and the Reset 
+	  buttons
+	
+## HOW IT WORKS : 
+
+	This process uses a combination of SIGNALS and 
+	NAMED PIPE for implementing the communication 
+	with the Motor X and Motor Z processes whereas it
+	uses only SIGNAL to communicate with the watchdog 
+	process and to implement the Stop button.
+	
+  ### STOP AND RESET BUTTONS :
+      
+    To send the commands received by the user 
+    (that can be S for the stop button and R for 
+    the reset button) to the two motor processes, 
+    the inspection console sends a signal to the both 
+    motors, to warn them that the user has pushed the 
+    Reset button or the Stop button.
+    To do this the inspection console needs the pid of 
+    the motor processes (because the system call KILL,
+    that send the signal, needs the process receiving
+    pid as first argument) so firstly we have created 
+    a temporary text file ,that contains all the pid of 
+    processes, and lastly an array that takes all pid 
+    in order to the inspection console can choose the 
+    proper pid that it needs.
+    For the Reset button after sending the signal the 
+    inspection console open a named pipe and write the 
+    reset command, taken in input, using the write() 
+    system call.
+    For the Stop button, instead, the inspection console
+    just send the signal (without named pipe) with the 
+    system call kill() (because is mandatory to manage 
+    the stop/emergency button only with a signal).
+       
+  ### COMMUNICATION WITH MOTORS :
+   
+   	The motors have to send ,to the inspection console, 
+    the hoist positions (while it is moving) and the 
+   	inspection console has to reporting them on the screen.
+   	To do this we use Signals, so the inspection console 
+   	catches the signal (with the signal system call) when 
+   	the motor has written the position and with a specific 
+   	signal handler, read the position using the named pipe
+   	and reports the position on the screen.
+   	
+  ### COMMUNICATION WITH WATCHDOG :
+      
+    When the inspection console receives a Reset or Stop
+    command in input and when it receives the hoist positions
+    from the motors, sends a signal to the watchdog in 
+    order to warn it that it is still active.
+    Instead, when the inspection console and the other 
+    processes are not active for 60 seconds, the inspection
+    console catches the alarm signal sent by watchdog and 
+    through the signal_handler function it handles the 
+    alarm signal.
+
