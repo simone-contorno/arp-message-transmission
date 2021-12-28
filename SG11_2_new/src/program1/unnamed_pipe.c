@@ -17,6 +17,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/time.h>
 #include <sys/wait.h> 
 
 #define MAX_SIZE 100000 // 1 hundred thousand
@@ -74,7 +75,8 @@ void unnamedPipe(int dim) {
     // Declare buffers for Producer and Consumer
     char buffer_P[dim], buffer_C[dim]; 
 
-    clock_t begin = clock();
+    struct timeval begin, end;
+    gettimeofday(&begin, NULL);
 
     // Open unnamed pipe
     if (pipe(fd) < 0) 
@@ -107,8 +109,8 @@ void unnamedPipe(int dim) {
         exit(0);
     }
 
-    clock_t end = clock();
-    double exec_time = (double)(end - begin) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double exec_time = (double) (end.tv_usec - begin.tv_usec) / 1000000 + (double) (end.tv_sec - begin.tv_sec);
     expired_time += exec_time;  
     fclose(file);
 }
@@ -129,8 +131,8 @@ int main (int argc, char *argv[]) {
     int size = atoi(argv[1]);
 
     // Check message dimension
-    if (size > 90000000) { // 90 million
-        printf("The message dimension is too large, please insert a value less than 90.000.000!\n");
+    if (size > 1000000) { // 1 million
+        printf("The message dimension is too large, please insert a value less than 1.000.000!\n");
         fflush(stdout);
         exit(-1);
     }

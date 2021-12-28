@@ -54,7 +54,7 @@ int main(int argc, char * argv[]){
     int size = atoi(argv[1]);
     int dim = round(sqrt((double) size));
     
-    //----------------------- Shared Memory section-------------------------------
+    /* ----------------------- Shared Memory Section ------------------------------- */
 
     shm_fd = shm_open(shm_name, O_RDONLY, 0666);
     if (shm_fd == -1)
@@ -64,7 +64,8 @@ int main(int argc, char * argv[]){
     if (ptr == MAP_FAILED) 
         error("[CONSUMER] shm_open() failed");
 
-    //--------------------------------- Semaphores Section -----------------------------------
+    /* --------------------------------- Semaphores Section ----------------------------------- */
+
     sem_t * empty = sem_open(sem_emp_name, 0);
     sem_t * full = sem_open(sem_full_name, 0);
     sem_t * mutex = sem_open(sem_mut_name, 0);
@@ -79,15 +80,17 @@ int main(int argc, char * argv[]){
 
     char buffer[size];
     char * start = ptr;
-    //---------------------------------- Circular Buffer Section ---------------------------------------
+
+    /* ---------------------------------- Circular Buffer Section --------------------------------------- */
+
     int j = 0;
-    for (int i = 0 ; i < size; i++){
+    for (int i = 0; i < size; i++){
         sem_wait(full);
         sem_wait(mutex);
         buffer[i] = *(char *)ptr;
         (char *) ptr++;
         j++;
-        if(!(j < dim )){
+        if (!(j < dim)){
             ptr = start;
             j = 0;
         }

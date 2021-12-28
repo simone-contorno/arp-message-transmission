@@ -21,8 +21,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/time.h>
 
-#define MAX_SIZE 1000000 // 1 million
+#define MAX_SIZE 1000000 // 1 hundred thousand
 
 int sockfd; // Socket file descriptor
 double expired_time = 0.0;
@@ -72,7 +73,8 @@ void randomMessage(char *buffer, int dim) {
  */
 void socketTransfer(char buffer[], char *argv[], int size) {
     int res; // To save the return value of the children after a fork() 
-    clock_t begin = clock();
+    struct timeval begin, end;
+    gettimeofday(&begin, NULL);
 
     /**
      * Local variables
@@ -97,7 +99,7 @@ void socketTransfer(char buffer[], char *argv[], int size) {
         else { // Consumer
             char str[10];
             sprintf(str, "%d", size);
-            char *args[] = {"socket_consumer", argv[1], argv[2], argv[3], (char*)0};
+            char *args[] = {"socket_consumer", argv[1], argv[2], str, (char*)0};
             if (execv("executables/socket_consumer", args) < 0) 
                 error("ERROR executing execv function");
             exit(0);
@@ -118,9 +120,9 @@ void socketTransfer(char buffer[], char *argv[], int size) {
         exit(0);
     }
 
-    clock_t end = clock();
-    double exec_time = (double)(end - begin) / CLOCKS_PER_SEC;
-    expired_time += exec_time;    
+    gettimeofday(&end, NULL);
+    double exec_time = (double) (end.tv_usec - begin.tv_usec) / 1000000 + (double) (end.tv_sec - begin.tv_sec);
+    expired_time += exec_time;  
 }
 
 int main (int argc, char *argv[]) {
@@ -139,8 +141,8 @@ int main (int argc, char *argv[]) {
     int size = atoi(argv[3]);
 
     // Check message dimension
-    if (size > 8000000) { // 8 million
-        printf("The message dimension is too large, please insert a value less than 8.000.000!\n");
+    if (size > 1000000) { // 1 million
+        printf("The message dimension is too large, please insert a value less than 1.000.000!\n");
         fflush(stdout);
         exit(-1);
     }

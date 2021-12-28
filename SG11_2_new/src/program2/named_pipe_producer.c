@@ -17,6 +17,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/time.h>
+#include <sys/time.h>
 #include <fcntl.h> 
 #include <sys/stat.h>
 #include <sys/wait.h> 
@@ -71,7 +73,9 @@ void randomMessage(char *buffer, int dim) {
  */
 void namedPipe(char buffer[], int max_size) {
     int res; // To save the return value of the children after a fork() 
-    clock_t begin = clock();
+    struct timeval begin, end;
+    gettimeofday(&begin, NULL);
+    
 
     // Create named pipe
     int fd_np;
@@ -102,9 +106,8 @@ void namedPipe(char buffer[], int max_size) {
 
     // Close the pipe
     close(fd_np);
-
-    clock_t end = clock();
-    double exec_time = (double)(end - begin) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    double exec_time = (double) (end.tv_usec - begin.tv_usec) / 1000000 + (double) (end.tv_sec - begin.tv_sec);
     expired_time += exec_time;  
 }
 
@@ -123,8 +126,8 @@ int main (int argc, char *argv[]) {
     int size = atoi(argv[1]);
 
     // Check message dimension
-    if (size > 150000000) { // 150 million
-        printf("The message dimension is too large, please insert a value less than 150.000.000!\n");
+    if (size > 1000000) { // 1 million
+        printf("The message dimension is too large, please insert a value less than 1.000.000!\n");
         fflush(stdout);
         exit(-1);
     }
