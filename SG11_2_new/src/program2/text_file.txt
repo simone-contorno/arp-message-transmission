@@ -4,7 +4,7 @@
     The named pipe creates a channel of communication
     that can be used by two, or more, processes in the 
     same machine simply accessing to its. 
-    The only constrain is that if a process wants to 
+    The only constraint is that if a process wants to 
     write in the pipe, another process must be reads 
     from its, otherwise the first process remain blocked. 
 
