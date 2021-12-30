@@ -1,0 +1,29 @@
+
+# PROGRAM 2 - NAMED PIPE
+
+    The named pipe creates a channel of communication
+    that can be used by two, or more, processes in the 
+    same machine simply accessing to its. 
+    The only constraint is that if a process wants to 
+    write in the pipe, another process must be reads 
+    from its, otherwise the first process remain blocked. 
+
+    ## HOW IT WORKS :
+        
+        This program uses a named pipe that transmits 
+        100.000 chars at time. 
+        
+        The function fork() is used to run separately the 
+        Producer and the Consumer; this last one is run
+        using an exec() function. 
+
+        ### PRODUCER
+        
+            It writes the message in the pipe and waits for 
+            the child.
+        
+        ### CONSUMER
+
+            It reads the message from the pipe and saves its 
+            in the Message.txt file.
+
