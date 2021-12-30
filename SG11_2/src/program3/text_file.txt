@@ -11,22 +11,24 @@
 
     ## HOW IT WORKS :
         
-        This program uses a socket that transmits 100.000 
-        chars at time. 
-
-        The function fork() is used to run separately the 
-        Producer and the Consumer; this last one is run
-        using an exec() function. 
+        This program uses a socket to transfer
+        100.000 chars at time, in order to transfer an amount
+        of data chosen by the user (max 100 MB). 
+        
+        The system calls fork() and exec() are used to run 
+        run together the two cuncurrent processes Producer 
+        (which is the father process) and the Consumer 
+        (which is the child process).
 
         ### PRODUCER
         
-            It opens the socket and waits for the connection 
-            by the Consumer; then it writes the message in the 
-            buffer and.
-
+            Through the randomMessage() function, the producer generate an
+            amount of data with a size chosen by the user.
+            Once the date are generated, the producer puts chunks of 100.000
+            characters in the socket and waits for the child.
+            
         ### CONSUMER
 
-            It connects to the socket created by the Producer,
-            reads the message from the buffer and saves its 
-            in the Message.txt file.
+            The consumer reads this chunks of data from the pipe
+            and then it creates a file, called Message.txt, to save them.
 
