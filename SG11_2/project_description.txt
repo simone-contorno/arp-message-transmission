@@ -1,25 +1,27 @@
 
 # PROJECT DESCRIPTION
 
-    The aim is to transmit a message of maximum 1 MB and 
-    compute how much time takes the program.
+    The aim of this project is to measure the speed efficiency when 
+    transferring data between a producer and a consumer using four 
+    concurrent programms based on different IPC transfer primitives.
+    The size of the amount of data is chosen by the user (Max 100 MB)
+    through an user interface implemented in the run.sh shell script
 
-    ## METHODS OF TRANSMISSION
-
-        There are 4 programs that used 4 different method of
-        message transmission:
+    The four IPC transfer primitives are :
 
         1) Unnamed pipe.
         2) Named pipe.
         3) Socket.
         4) Shared memory with circuilar buffer.
 
-    ## HOW THEY WORK
+## HOW THEY WORK
 
-        The message is generated randomly using a function 
-        that creates its with only numbers from 0 to 9; it
-        is saved in a file named Message.txt, generated in
-        the root directory. 
-        To compute the execution time it is used the function
-        gettimeofday().
+    The first three programs have smilar specification.
+    In this three programm the data are generated randomly
+    by a function called randomMessage() that creates data 
+    using only numbers (char) from 0 to 9; 
+    It is saved in a file named Message.txt, generated in
+    the root directory. 
+    To compute the execution time it is used the function
+    gettimeofday().
 
