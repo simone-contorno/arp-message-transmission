@@ -19,10 +19,10 @@
         
     This program uses an unnamed pipe to transfer
     100.000 chars at time, in order to transfer an amount
-    of data chosen by the user (max 100 mb). 
+    of data chosen by the user (max 100 MB). 
 
-    The system calls fork() and exec() are used to run together the 
-    two cuncurrent processes Producer (which is the father process) 
+    The system call fork() is used to run together the two 
+    cuncurrent processes Producer (which is the father process) 
     and the Consumer (which is the child process).
 
     ### PRODUCER
