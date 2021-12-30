@@ -7,7 +7,8 @@ dialog --title "Arp Second Assignment Menu" --menu \
 "1" "Unnamed Pipe" \
 "2" "Named Pipe" \
 "3" "Socket" \
-"4" "Shared Memory with circular buffer" 2> /tmp/temp
+"4" "Shared Memory with circular buffer" \
+"5" "Exit" 2> /tmp/temp
 if [ $? = 1 -o $? = 255 ]; then
    rm /tmp/temp ; exit            # in caso di errore termina lo script
 fi
