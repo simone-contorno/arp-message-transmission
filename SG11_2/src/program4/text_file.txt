@@ -1,7 +1,7 @@
 # 4. SHARED MEMORY WITH CIRCULAR BUFFER 
 
 	The shared memory is a specif IPC (Inter Process Communication) transfer primitive
-	that is based on the concept of Memory Mapping.This IPC mechanism allow to two or 
+	that is based on the concept of Memory Mapping. This IPC mechanism allow to two or 
 	more processes to read and/or write on the same memory segment.
 	Since two or more processes can access to the same memory segment, it becomes
 	a shared resources so it is necessary to implement an access policy using Semaphores.
@@ -23,7 +23,7 @@
 		this memory segment using the mmap() system call. The memory segment address is then pointed by
 		a void pointer.
 		Then the producer creates and initializes three semaphores using the sem_open() and the
-		sem_init() system call, this three semaphores will be used to impllement the access policy to 
+		sem_init() system call, this three semaphores will be used to implement the access policy to 
 		the shared memory.
 		Lastly to implement the circular buffer in the shared memory, the producer use the pointer that
 		contains the memory address of the shared memory (see below).
@@ -52,7 +52,7 @@
 
 		The consumer processes is really similar to the producer, the sobstantial differences are the 
 		following :
-		First one, the consumer doesn't have to create and initialize the semaphores, because this is 
+		First one, the consumer has not to create and initialize the semaphores, because this is 
 		done by the producer.
 		Second one, the shared memory is opened with the read only protocol.
 		Third one the circular buffer is implemented slightly different and lastly in this case the 
@@ -67,3 +67,5 @@
 			buffer using the pointers arithmetic and checks if the ptr pointer has reached the last memory 
 			location of the circular buffer and then it unlock the mutex and the empty semaphores using
 			the sem_post() system call. 
+			
+			
