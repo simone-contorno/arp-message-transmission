@@ -10,7 +10,7 @@ MTM=$(zenity --entry --width=$WIDTH --height=$HEIGHT --title="Message Transmissi
 4 - Shared memory")
 
 SIZE=$(zenity --entry --width=$WIDTH --height=$HEIGHT --title="First argument" --text="Massage size (byte) - Maximum 100 MB")
-if [[ $SIZE > 100000000 ]]; then    
+if [ $SIZE -gt 100000000 ]; then    
     zenity --error --width=$WIDTH --height=$HEIGHT --title="Input not valid" --text="The message is too big (Max. 100 MB)!"
     exit
 fi
