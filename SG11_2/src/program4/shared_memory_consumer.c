@@ -44,14 +44,14 @@ int main(int argc, char * argv[]){
        exit(-1);
     }
 
+    int size = atoi(argv[1]);
+    
     const char * shm_name = "/CircularBuffer";
     const char * sem_emp_name = "/sem_emp";
     const char * sem_full_name = "/sem_full";
     const char * sem_mut_name = "/sem_mut";
 
     const int SIZE = 4096;
-    
-    int size = atoi(argv[1]);
     
     /* ----------------------- Shared Memory Section ------------------------------- */
 

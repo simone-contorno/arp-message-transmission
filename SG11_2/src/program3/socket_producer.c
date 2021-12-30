@@ -199,13 +199,6 @@ int main (int argc, char *argv[]) {
     // Take input from the user
     int size = atoi(argv[3]);
 
-    // Check message dimension
-    if (size > 100000000) { // 100 MB
-        printf("The message dimension is too large, please insert a value less or equals to 100.000.000 (100 MB)!\n");
-        fflush(stdout);
-        exit(-1);
-    }
-
     printf("%s\n--- SOCKET STARTS ---\n\n%s", KRED, KNRM);
     fflush(stdout);
     
