@@ -1,31 +1,39 @@
 
 # PROGRAM 1 -  UNNAMED PIPE
 
-    The unnamed pipe creates a channel of communication
-    between two processes that are connected, like a father
-    and a child using the fork() function; in this case
-    two files descriptor are used: 
+    The unnamed pipe is a specific IPC (Inter Process Communication) 
+    transfer primitive.
+    In a nutshell, it is a buffer (circular buffer) managed by the kernel. 
+    So It is a temporary storage of the data to be transferred between 
+    participating cooperative processes,for instance like a father
+    and a child process generated using the fork() system call.
+    In this case are used two files descriptor : 
 
-    1) The first one is used by the Producer (father) to 
-       write the message.
-    2) The second one is used by the Consumer (child) to 
-       read the message.
+        1) The first one is used by the Producer (father) to 
+           write the message.
 
-    ## HOW IT WORKS :
+        2) The second one is used by the Consumer (child) to 
+           read the message.
+
+## HOW IT WORKS :
         
-        This program uses an unnamed pipe that transmits 
-        100.000 chars at time. 
+    This program uses an unnamed pipe to transfer
+    100.000 chars at time, in order to transfer an amount
+    of data chosen by the user (max 100 mb). 
 
-        The function fork() is used to run separately the 
-        Producer and the Consumer.
+    The system calls fork() and exec() are used to run together the 
+    two cuncurrent processes Producer (which is the father process) 
+    and the Consumer (which is the child process).
 
-        ### PRODUCER
-        
-            It writes the message in the pipe and waits for 
-            the child.
-        
-        ### CONSUMER
+    ### PRODUCER
 
-            It reads the message from the pipe and saves its 
-            in the Message.txt file.
+        Through the randomMessage() function, the producer generate an
+        amount of data with a size chosen by the user.
+        Once the date are generated, the producer puts chunks of 100.000
+        characters in the Unnamed Pipe and waits for the child.
+    
+    ### CONSUMER
+
+        The consumer reads this chunks of data from the pipe
+        and then it creates a file, called Message.txt, to save them.
 
