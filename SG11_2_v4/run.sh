@@ -9,7 +9,7 @@ MTM=$(zenity --entry --width=$WIDTH --height=$HEIGHT --title="Message Transmissi
 3 - Socket
 4 - Shared memory")
 
-SIZE=$(zenity --entry --width=$WIDTH --height=$HEIGHT --title="First argument" --text="Massage size")
+SIZE=$(zenity --entry --width=$WIDTH --height=$HEIGHT --title="First argument" --text="Massage size (byte)")
 
 if [[ $MTM == 1 ]]; then    
     ./executables/unnamed_pipe $SIZE
