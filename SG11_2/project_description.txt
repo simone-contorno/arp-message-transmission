@@ -5,7 +5,8 @@
     transferring data between a producer and a consumer using four 
     concurrent programms based on different IPC transfer primitives.
     The size of the amount of data is chosen by the user (Max 100 MB)
-    through an user interface implemented in the run.sh shell script
+    through an user interface implemented in the run.sh shell script 
+    that allow to execute each program separately.
 
     The four IPC transfer primitives are :
 
@@ -19,9 +20,27 @@
     The first three programs have smilar specification.
     In this three programm the data are generated randomly
     by a function called randomMessage() that creates data 
-    using only numbers (char) from 0 to 9; 
-    It is saved in a file named Message.txt, generated in
-    the root directory. 
-    To compute the execution time it is used the function
-    gettimeofday().
+    using only numbers (char) from 0 to 9.
+    Each programs trasfer chunks of data with a max size of 100.000
+    up to reach the total amount of data (chosen by the user) that
+    has to be transfered between producer and consumer.
+    So the producer use an array of char, called buffer to transfer
+    100.000 characters at time whereas th consumer create a file 
+    called Message.txt in which it save each chunks of data sent by the 
+    producer.
+    The fourth program has some other specification.
+    In the case of the shared memory the producer and the consumer
+    have to implement a circular buffer as shared memory segment.
+    This circular buffer has a size really small (four KB) respect to 
+    the total amount of data (that can be up to 100 MB) so the producer can
+    transfer only 4 Kb of data at time and as consequence, the consumer can
+    read and save on the file only 4 Kb at time.
+    Since the circular buffer is shared by two processes, a writer (Producer)
+    and a reader (Consumer), it is a shared resource that must be protected by
+    a semaphore.
+    In this case there are three semaphore, one to implement the access policy
+    to the shared memory, the second one that checks if there are no more space 
+    to write and the third one that checks if there are no more data to read.
+    Lastly the transfering time of each program is measured using the system 
+    call gettimeofday().
 
