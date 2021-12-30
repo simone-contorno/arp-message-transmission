@@ -4,8 +4,8 @@
     The unnamed pipe is a specific IPC (Inter Process Communication) 
     transfer primitive.
     In a nutshell, it is a buffer (circular buffer) managed by the kernel. 
-    So It is a temporary storage of the data to be transferred between 
-    participating cooperative processes,for instance like a father
+    So it is a temporary storage of the data to be transferred between 
+    participating cooperative processes, for instance like a father
     and a child process generated using the fork() system call.
     In this case are used two files descriptor : 
 
