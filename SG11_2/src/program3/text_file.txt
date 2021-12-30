@@ -25,10 +25,10 @@
             Through the randomMessage() function, the producer generate an
             amount of data with a size chosen by the user.
             Once the date are generated, the producer puts chunks of 100.000
-            characters in the socket and waits for the child.
+            characters in the Socket and waits for the child.
             
         ### CONSUMER
 
-            The consumer reads this chunks of data from the pipe
+            The consumer reads this chunks of data from the Socket
             and then it creates a file, called Message.txt, to save them.
 
