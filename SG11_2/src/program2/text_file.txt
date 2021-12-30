@@ -1,7 +1,9 @@
 
 # PROGRAM 2 - NAMED PIPE
 
-    The named pipe creates a channel of communication
+    The named pipe is a specific IPC (Inter Process Communication) 
+    transfer primitive.
+    It can be seen as a channel of communication
     that can be used by two, or more, processes in the 
     same machine simply accessing to its. 
     The only constraint is that if a process wants to 
