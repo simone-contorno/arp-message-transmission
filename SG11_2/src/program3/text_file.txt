@@ -3,10 +3,9 @@
 
     The socket is a specific IPC (Inter Process Communication) 
     transfer primitive.
-    It creates a channel of communication
-    that can be used by two, or more, processes also in 
-    different machines simply knowing the hostname and the 
-    port. 
+    It creates a channel of communication that can be used 
+    by two, or more, processes also in different machines 
+    simply knowing the hostname and the port. 
     The only constraint is that if a process wants to 
     write in the socket, another process must be listen 
     on it, otherwise the first process remain blocked. 
