@@ -6,7 +6,7 @@
     concurrent programms based on different IPC transfer primitives.
     The size of the amount of data is chosen by the user (Max 100 MB)
     through an user interface implemented in the run.sh shell script 
-    that allow to execute each program separately.
+    that allows to execute each program separately.
 
     The four IPC transfer primitives are :
 
