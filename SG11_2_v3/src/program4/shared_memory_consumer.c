@@ -68,13 +68,17 @@ int main(int argc, char * argv[]){
 
     /* --------------------------------- Semaphores Section ----------------------------------- */
 
+    sem_t * empty = sem_open(sem_emp_name, 0);
     sem_t * full = sem_open(sem_full_name, 0);
-    sem_t * empty = sem_open(sem_mut_name, 0);
+    sem_t * mutex = sem_open(sem_mut_name, 0);
     
-    if (full == (void *) -1)
-        error("[CONSUMER] sem_open() failed");
+    // sem_open errors control
     if (empty == (void *) -1)
         error("[CONSUMER] sem_open() failed");
+    if (full == (void *) -1)
+        error("[CONSUMER] sem_open() failed");
+    if (mutex == (void *) -1)
+        error("sem_open() failed");
 
     /* ---------------------------------- Circular Buffer Section --------------------------------------- */
     
@@ -84,20 +88,18 @@ int main(int argc, char * argv[]){
     file = fopen(filename, "a");
     int j = 0;
     for (int i = 0; i < size; i++) {
-        if (j == 0) {
-            //printf("[CONSUMER] blocked\n");fflush(stdout);
-            sem_wait(full);
-            //printf("[CONSUMER] unlocked\n");fflush(stdout);
-        }
+        sem_wait(full);
+        sem_wait(mutex);
         buffer[j] = *(char *)ptr;
         (char *) ptr++;
         j++;
-        if (j == SIZE-1) {
+        if (j == SIZE-1 || i == size-1) {
             fputs(buffer, file);
             ptr = start;
             j = 0;
-            sem_post(empty);
         }
+        sem_post(mutex);
+        sem_post(empty);
     }
     fclose(file);
 

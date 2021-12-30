@@ -128,6 +128,8 @@ void namedPipe( int size) {
             size = 0; 
     }
 
+    close(fd_np);
+
     gettimeofday(&end, NULL);
     double exec_time = (double) (end.tv_usec - begin.tv_usec) / 1000000 + (double) (end.tv_sec - begin.tv_sec);
     expired_time += exec_time;  
@@ -174,7 +176,7 @@ int main (int argc, char *argv[]) {
 
     // Call the named pipe
     namedPipe(size);
-
+    
     unlink(myfifo);
     
     printf("%s\n--- NAMED PIPE ENDS ---\n\n%s", KRED, KNRM);

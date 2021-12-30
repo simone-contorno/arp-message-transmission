@@ -219,6 +219,8 @@ int main (int argc, char *argv[]) {
     
     socketTransfer(argv, size);
 
+    close(sockfd);
+
     printf("%s\n--- SOCKET ENDS ---\n\n%s", KRED, KNRM);
     fflush(stdout);
 

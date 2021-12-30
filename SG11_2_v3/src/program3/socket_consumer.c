@@ -106,5 +106,7 @@ int main(int argc, char *argv[]) {
     fputs(buffer, file);
     fclose(file);
 
+    close(sockfd);
+    
     return 0;
 }

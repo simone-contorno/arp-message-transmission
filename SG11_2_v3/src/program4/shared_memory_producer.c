@@ -108,10 +108,10 @@ int main(int argc, char * argv[]) {
 
     const int SIZE = MAX_SIZE; // This is a default value, after we redefine the size using ftruncate
 
+    /* ----------------------- Shared Memory section -------------------------------------- */
+
     int shm_fd;
     void * ptr;
-
-    /* ----------------------- Shared Memory section -------------------------------------- */
 
     shm_fd = shm_open(shm_name, O_CREAT | O_RDWR, 0666);
     if (shm_fd == -1) 
@@ -130,44 +130,48 @@ int main(int argc, char * argv[]) {
     if it doesn't exist yet.
     The third argument specifies the permissions to be placed on the
     new semaphore. */
+    sem_t * empty = sem_open(sem_emp_name, O_CREAT, 0644, 1); 
     sem_t * full = sem_open(sem_full_name, O_CREAT, 0644, 0);
-    sem_t * empty = sem_open(sem_mut_name, O_CREAT, 0644, 1);
+    sem_t * mutex = sem_open(sem_mut_name, O_CREAT, 0644, 1);
 
     // sem_open errors control
     if (empty == (void *) -1)
         error("[PRODUCER] sem_open() failed");
     if (full == (void *) -1)
         error("[PRODUCER] sem_open() failed");
+    if (mutex == (void *) -1)
+        error("[PRODUCER] sem_open() failed");
 
     // The second parameter specifies whether or not the initialized semaphore is shared between processes.
     // A non zero value means the semaphore is shared between processes and a value of zero means it is shared between threads.
+    if (size > SIZE) 
+        sem_init(empty, 1, SIZE-1); 
+    else 
+        sem_init(empty, 1, size-1);
     sem_init(full, 1, 0);
-    sem_init(empty, 1, 0);
+    sem_init(mutex, 1, 1);
 
     /* ---------------------------------- Circular Buffer Section --------------------------------------- */
     
     char buffer[SIZE];
     char * start = ptr;
-
+    
     // Write into the memory segment
     int j = 0;
     for (int i = 0; i < size; i++) {
+        sem_wait(empty); // It waits when there are no empty slots
+        sem_wait(mutex);
         *(char *) ptr = buffer[j];
         (char *) ptr++;
         j++;
-        if (j == SIZE-1) {
+        if (j == SIZE-1 || i == size-1) {
             randomMessage(buffer, SIZE); 
             ptr = start;
             j = 0;
-            sem_post(full);
-            //printf("[PRODUCER] blocked\n");fflush(stdout);
-            sem_wait(empty);
-            //printf("[PRODUCER] unlocked\n");fflush(stdout);
         }
+        sem_post(mutex);
+        sem_post(full); // It says to the consumer that the buffer has some data and it can consume now
     }
-    
-    for (int i = 0; i < SIZE; i++)
-        sem_post(full);
     
     /* ------------------- Closing Section ------------------------- */
     
@@ -183,7 +187,7 @@ int main(int argc, char * argv[]) {
     gettimeofday(&end, NULL);
     double expired_time = (double) (end.tv_usec - begin.tv_usec) / 1000000 + (double) (end.tv_sec - begin.tv_sec);
 
-    printf("\nTotal time execution:  %f seconds\n", expired_time);
+    printf("\nTotal time execution:  %f seconds\n", expired_time-1);
     fflush(stdout);
     printf("%s\n--- SHARED MEMORY ENDS ---\n\n%s", KRED, KNRM);
     fflush(stdout);
