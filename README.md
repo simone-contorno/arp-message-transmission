@@ -56,7 +56,12 @@ To compile the source files, type:
 
 Now, to exec the program, type:
 
-<pre><code>./run.sh </code></pre>
+<pre><code>./run.sh</code></pre>
+
+A window launched with zenity will appear. <br>
+Zenity is default installed in Linux, if you have not you can install it with:
+<pre><code>sudo apt-get update -y</code></pre>
+<pre><code>sudo apt-get install -y zenity</code></pre>
 
 If you want read some specific description about a process, type:
 
@@ -70,4 +75,3 @@ where < number > is the corresponding process text file description.
 Thanks to have read this file, i hope it was clear and interesting.<br>
 <br>
 Collaborator: Gabriele Russo - @GabrieleRusso11
-
