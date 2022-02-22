@@ -36,7 +36,7 @@ The aim is to test the transmission velocities of these four different methods.
 ### How it works
 
 The program asks to the user to type the dimension of the random message (with maximum size of 100 MB) and the IPC to use. <br>
-In case of socket, an host address and a port will be ask too. <br;
+In case of socket, an host address and a port will be ask too. <br>
 Afterwards, the program will execute the corresponding process to transmit the message showing a progression bar and, in the end, reporting the total amount of time required.
 
 <a name="installation"></a>
