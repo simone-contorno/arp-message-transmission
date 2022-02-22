@@ -1,0 +1,35 @@
+
+# PROGRAM 3 - SOCKET
+
+    The socket is a specific IPC (Inter Process Communication) 
+    transfer primitive.
+    It creates a channel of communication that can be used 
+    by two, or more, processes also in different machines 
+    simply knowing the hostname and the port. 
+    The only constraint is that if a process wants to 
+    write in the socket, another process must be listen 
+    on it, otherwise the first process remain blocked. 
+
+    ## HOW IT WORKS :
+        
+        This program uses a socket to transfer
+        100.000 chars at time, in order to transfer an amount
+        of data chosen by the user (max 100 MB). 
+        
+        The system calls fork() and exec() are used to run 
+        run together the two cuncurrent processes Producer 
+        (which is the father process) and the Consumer 
+        (which is the child process).
+
+        ### PRODUCER
+        
+            Through the randomMessage() function, the producer generate an
+            amount of data with a size chosen by the user.
+            Once the date are generated, the producer puts chunks of 100.000
+            characters in the Socket and waits for the child.
+            
+        ### CONSUMER
+
+            The consumer reads this chunks of data from the Socket
+            and then it creates a file, called Message.txt, to save them.
+

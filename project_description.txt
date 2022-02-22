@@ -1,0 +1,46 @@
+
+# PROJECT DESCRIPTION
+
+    The aim of this project is to measure the speed efficiency when 
+    transferring data between a producer and a consumer using four 
+    concurrent programs based on different IPC transfer primitives.
+    The size of the data is chosen by the user (Max 100 MB)
+    through an user interface implemented in the run.sh shell script 
+    that allows to execute each program separately.
+
+    The four IPC transfer primitives are :
+
+        1) Unnamed pipe.
+        2) Named pipe.
+        3) Socket.
+        4) Shared memory with circuilar buffer.
+
+## HOW THEY WORK
+
+    The first three programs have similar specifications.
+    In these three programs the data are generated randomly
+    by a function called randomMessage() that creates data 
+    using only numbers (char) from 0 to 9.
+    Each programs trasfer chunks of data with a max size of 100.000
+    up to reach the total amount of data (chosen by the user) that
+    has to be transfered between producer and consumer.
+    So the producer use an array of chars, called buffer, to transfer
+    100.000 characters at time whereas the consumer creates a file 
+    called Message.txt in which it saves each chunks of data sent by the 
+    producer.
+    The fourth program has some other specification.
+    In the case of the shared memory the producer and the consumer
+    have to implement a circular buffer as shared memory segment.
+    This circular buffer has a size really small (4 KB) respect to 
+    the total amount of data (that can be up to 100 MB) so the producer can
+    transfers only 4 KB of data at time and as consequence, the consumer can
+    reads and saves on the file only 4 KB at time.
+    Since the circular buffer is shared by two processes, a writer (Producer)
+    and a reader (Consumer), it is a shared resource that must be protected by
+    a semaphore.
+    In this case there are three semaphores, one to implement the access policy
+    to the shared memory, the second one that checks if there is no more space 
+    to write and the third one that checks if there are no more data to read.
+    Lastly the transfering time of each program is measured using the system 
+    call gettimeofday().
+
