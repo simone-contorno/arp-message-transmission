@@ -1,6 +1,5 @@
-# ARP-Assignment-2
-## Advanced Robot Programming - Transfer data from a Producer to a Consumer - Robotics Engineering
-### Author: Simone Contorno
+# Advanced Robot Programming - Transfer data from a Producer to a Consumer - Robotics Engineering
+## Author: Simone Contorno
 
 <br>
 
@@ -44,7 +43,7 @@ Afterwards, the program will execute the corresponding process to transmit the m
 
 Download the repository:
 
-<pre><code>git clone https://github.com/simone-contorno/ARP-Assignment-2</code></pre>
+<pre><code>git clone https://github.com/simone-contorno/arp-message-transmission</code></pre>
 
 After, go into the directory and make executable all .sh files:
 
